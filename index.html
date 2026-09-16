@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clara Ramos | Portfolio DAW</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Canvas partículas de fondo -->
+  <canvas id="particles"></canvas>
+
+  <!-- Botón menú móvil -->
+  <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menú">☰</button>
+
+  <!-- Botón tema claro/oscuro -->
+  <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema">🌙</button>
+
+  <!-- Botón volver arriba -->
+  <button id="back-to-top" class="back-to-top" aria-label="Volver arriba">↑</button>
+
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <div class="logo-icon">&lt;/&gt;</div>
+      <h1>Clara Ramos</h1>
+      <p>Desarrolladora en formación</p>
+    </div>
+
+    <nav class="menu">
+      <a href="#inicio" class="active"><span>🏠</span> Inicio</a>
+      <a href="#sobre-mi"><span>👤</span> Sobre mí</a>
+      <a href="#habilidades"><span>⚙️</span> Habilidades</a>
+      <a href="#idiomas"><span>🌐</span> Idiomas</a>
+      <a href="#contacto"><span>✉️</span> Contacto</a>
+    </nav>
+
+    <div class="socials">
+      <a href="#" aria-label="GitHub">🐙</a>
+      <a href="#" aria-label="LinkedIn">💼</a>
+      <a href="#" aria-label="Twitter">🐦</a>
+    </div>
+
+    <p class="footer-sidebar">DAW · 2025</p>
+  </aside>
+
+  <!-- ========== CONTENIDO PRINCIPAL ========== -->
+  <main class="content">
+
+    <!-- HERO -->
+    <section id="inicio" class="hero">
+      <div class="hero-text">
+        <p class="saludo">Hola, soy</p>
+        <h2 class="nombre">Clara <span>Ramos</span></h2>
+        <p class="rol">
+          <span id="typed-text"></span><span class="cursor">|</span>
+        </p>
+        <p class="descripcion">
+          Me encanta crear soluciones a través del código, aprender cada día
+          y desarrollar proyectos que me permitan crecer como profesional
+          en el mundo del desarrollo web.
+        </p>
+        <a href="#habilidades" class="btn">Ver mis habilidades →</a>
+      </div>
+    </section>
+
+    <!-- SOBRE MÍ -->
+    <section id="sobre-mi" class="sobre-mi">
+      <div class="sobre-imagen">
+        <img
+          src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&q=80"
+          alt="Avatar de Clara Ramos"
+          loading="lazy"
+        >
+      </div>
+      <div class="sobre-texto">
+        <h3>Sobre mí</h3>
+        <p>
+          Actualmente estoy cursando <strong>1º de DAW</strong> (Desarrollo de Aplicaciones Web),
+          donde estoy aprendiendo a desarrollar aplicaciones web, tanto en front-end
+          como en back-end, y a trabajar con bases de datos, entornos de desarrollo
+          y herramientas de gestión de proyectos.
+        </p>
+        <p>
+          Me considero una persona curiosa, constante y con muchas ganas de seguir
+          aprendiendo y mejorando. Disfruto resolviendo problemas, explorando nuevas
+          tecnologías y creando proyectos que sean útiles y atractivos.
+        </p>
+
+        <div class="info-extra">
+          <div class="info-item">🎓 DAW (1º curso)</div>
+          <div class="info-item">📍 Marchena, Sevilla</div>
+          <div class="info-item">🚗 Carnet de conducir B</div>
+          <div class="info-item">💜 Programación · Tecnología · Videojuegos</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HABILIDADES -->
+    <section id="habilidades" class="habilidades">
+      <h3>Habilidades</h3>
+      <div class="skills-grid">
+        <div class="skill">
+          <div class="skill-icon html">HTML</div>
+          <p>HTML</p>
+        </div>
+        <div class="skill">
+          <div class="skill-icon css">CSS</div>
+          <p>CSS</p>
+        </div>
+        <div class="skill">
+          <div class="skill-icon js">JS</div>
+          <p>JavaScript</p>
+        </div>
+        <div class="skill">
+          <div class="skill-icon php">PHP</div>
+          <p>PHP</p>
+        </div>
+        <div class="skill">
+          <div class="skill-icon mysql">🗄️</div>
+          <p>MySQL</p>
+        </div>
+        <div class="skill">
+          <div class="skill-icon git">🔺</div>
+          <p>Git</p>
+        </div>
+        <div class="skill">
+          <div class="skill-icon tools">🛠️</div>
+          <p>Herramientas<br>de desarrollo</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- IDIOMAS -->
+    <section id="idiomas" class="idiomas">
+      <h3>Idiomas</h3>
+      <div class="idiomas-grid">
+        <div class="idioma-card">
+          <div class="idioma-header">
+            <span class="bandera">🇪🇸</span>
+            <h4>Español</h4>
+          </div>
+          <p class="nivel">Nativo</p>
+          <div class="barra">
+            <div class="progreso" style="width: 100%"></div>
+          </div>
+        </div>
+
+        <div class="idioma-card">
+          <div class="idioma-header">
+            <span class="bandera">🇬🇧</span>
+            <h4>Inglés</h4>
+          </div>
+          <p class="nivel">Intermedio (B1)</p>
+          <div class="barra">
+            <div class="progreso" style="width: 60%"></div>
+          </div>
+        </div>
+
+        <div class="idioma-card">
+          <div class="idioma-header">
+            <span class="bandera">🇮🇹</span>
+            <h4>Italiano</h4>
+          </div>
+          <p class="nivel">Básico (A2)</p>
+          <div class="barra">
+            <div class="progreso" style="width: 35%"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" class="contacto">
+      <div class="contacto-info">
+        <h3>Contacto</h3>
+        <p>¿Te gustaría saber más sobre mí o colaborar en algún proyecto? ¡Hablemos!</p>
+      </div>
+
+      <div class="contacto-datos">
+        <p>✉️ clara.ramos@example.com</p>
+        <p>💼 linkedin.com/in/clararamos</p>
+        <p>🐙 github.com/ClaraRamos</p>
+      </div>
+
+      <a href="mailto:clara.ramos@example.com" class="btn">Enviar mensaje →</a>
+    </section>
+
+    <p class="footer-final">Gracias por visitar mi portfolio 💜 · <span id="year"></span></p>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
