@@ -264,3 +264,4 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('%cGracias por inspeccionar mi portfolio 💜', 'color: #8b5cf6; font-size: 14px;');
 
 });
+
