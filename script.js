@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const textos = [
     'Estudiante de 2º DAW',
     'Apasionada por la programación',
-    'Futura desarrolladora web 💜'
+    'Futura desarrolladora web'
   ];
 
   let textoIndex = 0;
@@ -280,6 +280,6 @@ document.addEventListener('DOMContentLoaded', () => {
      10. LOG EN CONSOLA 🎉
      ============================================ */
   console.log('%c¡Hola! 👋 Soy Clara Ramos', 'color: #a78bfa; font-size: 18px; font-weight: bold;');
-  console.log('%cGracias por inspeccionar mi portfolio 💜', 'color: #8b5cf6; font-size: 14px;');
+  console.log('%cGracias por inspeccionar mi portfolio', 'color: #8b5cf6; font-size: 14px;');
 
 });
