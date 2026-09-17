@@ -473,17 +473,6 @@ h3::after {
   box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
 }
 
-.curso-cat {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--cat-color, var(--purple));
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--cat-color, var(--purple));
-  padding: 4px 10px;
-  border-radius: 20px;
-}
 
 body.light-mode .curso-cat {
   background: rgba(0, 0, 0, 0.03);
