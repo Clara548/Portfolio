@@ -16,6 +16,7 @@
   --text: #e5e7eb;
   --text-muted: #9ca3af;
   --border: #2a2a3e;
+  --transition: 0.3s ease;
 }
 
 body.light-mode {
@@ -29,6 +30,7 @@ body.light-mode {
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 40px;
 }
 
 body {
@@ -108,7 +110,7 @@ body {
   padding: 12px 16px;
   border-radius: 10px;
   font-size: 14px;
-  transition: all 0.3s;
+  transition: all var(--transition);
   display: flex;
   gap: 12px;
   align-items: center;
@@ -131,7 +133,7 @@ body {
 .socials a {
   text-decoration: none;
   opacity: 0.7;
-  transition: 0.3s;
+  transition: var(--transition);
 }
 
 .socials a:hover {
@@ -208,8 +210,13 @@ h3::after {
 
 .descripcion {
   max-width: 600px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   color: var(--text-muted);
+  font-size: 14px;
+}
+
+.hero .btn {
+  margin-top: 10px;
 }
 
 .btn {
@@ -221,7 +228,7 @@ h3::after {
   text-decoration: none;
   font-weight: 500;
   font-size: 14px;
-  transition: 0.3s;
+  transition: var(--transition);
   border: none;
   cursor: pointer;
 }
@@ -297,7 +304,7 @@ h3::after {
   border: 1px solid var(--border);
   padding: 20px 10px;
   border-radius: 14px;
-  transition: 0.3s;
+  transition: var(--transition);
 }
 
 .skill:hover {
@@ -315,18 +322,101 @@ h3::after {
   justify-content: center;
 }
 
-.skill-icon.html { color: #e34c26; }
-.skill-icon.css  { color: #264de4; }
-.skill-icon.js   { color: #f7df1e; }
-.skill-icon.php  { color: #8892be; }
-.skill-icon.mysql{ color: #00758f; }
-.skill-icon.git  { color: #f1502f; }
-.skill-icon.linux{ color: #f6c000; }
-.skill-icon.tools{ color: var(--purple-light); font-size: 30px; }
+.skill-icon.html  { color: #e34c26; }
+.skill-icon.css   { color: #264de4; }
+.skill-icon.js    { color: #f7df1e; }
+.skill-icon.php   { color: #8892be; }
+.skill-icon.mysql { color: #00758f; }
+.skill-icon.git   { color: #f1502f; }
+.skill-icon.linux { color: #f6c000; }
+.skill-icon.java  { color: #f89820; font-size: 30px; }
+.skill-icon.tools { color: var(--purple-light); font-size: 30px; }
 
 .skill p {
   font-size: 13px;
   color: var(--text-muted);
+}
+
+/* =========================================================
+   CURSOS Y CERTIFICACIONES
+   ========================================================= */
+.cursos {
+  margin-bottom: 70px;
+}
+
+.cursos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+.curso-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 25px 20px;
+  border-radius: 14px;
+  text-align: center;
+  transition: var(--transition);
+  overflow: hidden;
+}
+
+.curso-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--purple), var(--purple-light));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.curso-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--purple);
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.2);
+}
+
+.curso-card:hover::before {
+  transform: scaleX(1);
+}
+
+.curso-icon {
+  font-size: 38px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.curso-card h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.curso-entidad {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.curso-badge {
+  display: inline-block;
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--purple-light);
+  border: 1px solid var(--purple);
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+body.light-mode .curso-badge {
+  background: rgba(139, 92, 246, 0.12);
+  color: var(--purple);
 }
 
 /* =========================================================
@@ -347,7 +437,7 @@ h3::after {
   border: 1px solid var(--border);
   padding: 20px;
   border-radius: 14px;
-  transition: 0.3s;
+  transition: var(--transition);
 }
 
 .idioma-card:hover {
@@ -420,6 +510,7 @@ h3::after {
   font-size: 13px;
   color: var(--text-muted);
   margin-bottom: 6px;
+  word-break: break-word;
 }
 
 /* =========================================================
@@ -447,7 +538,7 @@ h3::after {
   border: none;
   font-size: 20px;
   cursor: pointer;
-  z-index: 1001;
+  z-index: 1002;
   transition: transform 0.3s, background 0.3s;
   box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
 }
@@ -474,7 +565,7 @@ h3::after {
   cursor: pointer;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s;
+  transition: all var(--transition);
   z-index: 999;
   box-shadow: 0 4px 15px rgba(139, 92, 246, 0.5);
 }
@@ -505,8 +596,8 @@ h3::after {
   border: none;
   font-size: 22px;
   cursor: pointer;
-  z-index: 1002;
-  transition: 0.3s;
+  z-index: 1001;
+  transition: var(--transition);
 }
 
 .menu-toggle:hover {
@@ -523,8 +614,8 @@ h3::after {
 }
 
 @keyframes blink {
-  0%, 50%  { opacity: 1; }
-  51%, 100%{ opacity: 0; }
+  0%, 50%   { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
 /* =========================================================
@@ -591,11 +682,6 @@ body.light-mode #particles {
     flex-direction: column;
     align-items: flex-start;
   }
-
-  .theme-toggle {
-    top: 20px;
-    right: 20px;
-  }
 }
 
 @media (max-width: 500px) {
@@ -607,89 +693,11 @@ body.light-mode #particles {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .cursos-grid {
+    grid-template-columns: 1fr;
+  }
+
   .contacto {
     padding: 20px;
   }
-}
-
-/* =========================================================
-   CURSOS Y CERTIFICACIONES
-   ========================================================= */
-.cursos {
-  margin-bottom: 70px;
-}
-
-.cursos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 20px;
-}
-
-.curso-card {
-  position: relative;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  padding: 25px 20px;
-  border-radius: 14px;
-  text-align: center;
-  transition: 0.3s;
-  overflow: hidden;
-}
-
-.curso-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, var(--purple), var(--purple-light));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s ease;
-}
-
-.curso-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--purple);
-  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.2);
-}
-
-.curso-card:hover::before {
-  transform: scaleX(1);
-}
-
-.curso-icon {
-  font-size: 38px;
-  margin-bottom: 12px;
-  display: block;
-}
-
-.curso-card h4 {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 6px;
-  color: var(--text);
-}
-
-.curso-entidad {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-bottom: 12px;
-}
-
-.curso-badge {
-  display: inline-block;
-  background: rgba(139, 92, 246, 0.15);
-  color: var(--purple-light);
-  border: 1px solid var(--purple);
-  padding: 3px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-body.light-mode .curso-badge {
-  background: rgba(139, 92, 246, 0.12);
-  color: var(--purple);
 }
