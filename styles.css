@@ -344,79 +344,229 @@ h3::after {
   margin-bottom: 70px;
 }
 
-.cursos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 20px;
+.cursos-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
 }
 
+.cursos-contador {
+  font-size: 13px;
+  color: var(--purple-light);
+  background: rgba(139, 92, 246, 0.12);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.cursos-contador:hover {
+  border-color: var(--purple);
+  transform: translateY(-2px);
+}
+
+.cursos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 22px;
+}
+
+/* ---------- Tarjeta base ---------- */
 .curso-card {
   position: relative;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  padding: 25px 20px;
-  border-radius: 14px;
-  text-align: center;
-  transition: var(--transition);
+  padding: 24px 22px 20px;
+  border-radius: 16px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
+/* Barra lateral de color según categoría */
 .curso-card::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, var(--purple), var(--purple-light));
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.4s ease;
+  width: 4px;
+  height: 100%;
+  background: var(--cat-color, var(--purple));
+  transition: width 0.4s ease;
+}
+
+/* Efecto glow suave al hacer hover */
+.curso-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at center,
+    var(--cat-color, var(--purple)) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.curso-card:hover .curso-glow {
+  opacity: 0.08;
 }
 
 .curso-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--purple);
-  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.2);
+  transform: translateY(-8px);
+  border-color: var(--cat-color, var(--purple));
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.3),
+    0 0 0 1px var(--cat-color, var(--purple));
 }
 
 .curso-card:hover::before {
-  transform: scaleX(1);
+  width: 6px;
+}
+
+/* ---------- Categorías (colores) ---------- */
+.curso-card[data-cat="programacion"] { --cat-color: #8b5cf6; }
+.curso-card[data-cat="salud"]        { --cat-color: #ef4444; }
+.curso-card[data-cat="idiomas"]      { --cat-color: #3b82f6; }
+.curso-card[data-cat="diseno"]       { --cat-color: #ec4899; }
+.curso-card[data-cat="otros"]        { --cat-color: #f59e0b; }
+
+/* ---------- Cabecera de la tarjeta ---------- */
+.curso-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 1;
 }
 
 .curso-icon {
-  font-size: 38px;
-  margin-bottom: 12px;
-  display: block;
+  font-size: 34px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  transition: all 0.4s ease;
 }
 
-.curso-card h4 {
-  font-size: 16px;
+.curso-card:hover .curso-icon {
+  transform: scale(1.1) rotate(-6deg);
+  background: var(--cat-color, var(--purple));
+  border-color: var(--cat-color, var(--purple));
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+}
+
+.curso-cat {
+  font-size: 11px;
   font-weight: 600;
-  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--cat-color, var(--purple));
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--cat-color, var(--purple));
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+body.light-mode .curso-cat {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+/* ---------- Contenido ---------- */
+.curso-card h4 {
+  font-size: 17px;
+  font-weight: 600;
   color: var(--text);
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+  line-height: 1.3;
 }
 
 .curso-entidad {
   font-size: 13px;
   color: var(--text-muted);
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Footer de la tarjeta ---------- */
+.curso-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border);
+  position: relative;
+  z-index: 1;
 }
 
 .curso-badge {
-  display: inline-block;
-  background: rgba(139, 92, 246, 0.15);
-  color: var(--purple-light);
-  border: 1px solid var(--purple);
-  padding: 3px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(34, 197, 94, 0.12);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  padding: 4px 10px;
   border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.curso-year {
   font-size: 12px;
+  color: var(--text-muted);
   font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.curso-year::before {
+  content: '📅';
+  font-size: 11px;
 }
 
 body.light-mode .curso-badge {
-  background: rgba(139, 92, 246, 0.12);
-  color: var(--purple);
+  background: rgba(34, 197, 94, 0.1);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 500px) {
+  .curso-top {
+    gap: 10px;
+  }
+
+  .curso-icon {
+    width: 46px;
+    height: 46px;
+    font-size: 28px;
+  }
+
+  .curso-cat {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
 }
 
 /* =========================================================
