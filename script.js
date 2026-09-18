@@ -35,9 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
      ============================================ */
   const typedText = document.getElementById('typed-text');
   const textos = [
-    'Estudiante de 1º DAW',
+    'Estudiante de 2º DAW',
     'Apasionada por la programación',
-    'Futura desarrolladora web 💜'
+    'Futura desarrolladora web'
   ];
 
   let textoIndex = 0;
@@ -45,6 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let borrando = false;
 
   function escribir() {
+    if (!typedText) return;
+
     const textoActual = textos[textoIndex];
 
     if (!borrando) {
@@ -113,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
      4. ANIMACIONES AL HACER SCROLL
      ============================================ */
   const elementosAnimar = document.querySelectorAll(
-    '.sobre-mi, .habilidades, .idiomas, .contacto, .hero-text > *'
+    '.sobre-mi, .habilidades, .cursos, .idiomas, .contacto, .hero-text > *'
   );
   elementosAnimar.forEach(el => el.classList.add('reveal'));
 
@@ -144,6 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.5 });
 
   barras.forEach(barra => {
+    // Guardar el ancho original ANTES de resetearlo
     barra.dataset.width = barra.style.width || '0%';
     barra.style.width = '0%';
     observerBarras.observe(barra);
@@ -176,6 +179,17 @@ document.addEventListener('DOMContentLoaded', () => {
   menuToggle.addEventListener('click', () => {
     sidebar.classList.toggle('open');
     menuToggle.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
+  });
+
+  // Cerrar menú al hacer click fuera en móvil
+  document.addEventListener('click', (e) => {
+    if (window.innerWidth <= 900 &&
+        sidebar.classList.contains('open') &&
+        !sidebar.contains(e.target) &&
+        !menuToggle.contains(e.target)) {
+      sidebar.classList.remove('open');
+      menuToggle.textContent = '☰';
+    }
   });
 
 
@@ -245,7 +259,12 @@ document.addEventListener('DOMContentLoaded', () => {
   initCanvas();
   animarParticulas();
 
-  window.addEventListener('resize', initCanvas);
+  // Debounce en el resize (evita recalcular 100 veces por segundo)
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(initCanvas, 200);
+  });
 
 
   /* ============================================
@@ -261,6 +280,6 @@ document.addEventListener('DOMContentLoaded', () => {
      10. LOG EN CONSOLA 🎉
      ============================================ */
   console.log('%c¡Hola! 👋 Soy Clara Ramos', 'color: #a78bfa; font-size: 18px; font-weight: bold;');
-  console.log('%cGracias por inspeccionar mi portfolio 💜', 'color: #8b5cf6; font-size: 14px;');
+  console.log('%cGracias por inspeccionar mi portfolio', 'color: #8b5cf6; font-size: 14px;');
 
 });
