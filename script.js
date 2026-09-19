@@ -287,9 +287,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const ruta = btn.dataset.img;
         if (!ruta) return;
 
+        modalImg.style.opacity = '0';
         modalImg.src = ruta;
         modalImg.alt = btn.closest('.curso-card, .idioma-card')
           ?.querySelector('h4')?.textContent || 'Certificado';
+
+        modalImg.onload = () => {
+          modalImg.style.transition = 'opacity 0.3s ease';
+          modalImg.style.opacity = '1';
+        };
 
         modal.classList.add('open');
         document.body.classList.add('modal-open');
@@ -309,7 +315,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function cerrarModal() {
       modal.classList.remove('open');
       document.body.classList.remove('modal-open');
-      setTimeout(() => { modalImg.src = ''; }, 300);
+      setTimeout(() => {
+        modalImg.src = '';
+        modalImg.style.opacity = '0';
+      }, 300);
     }
   }
 
