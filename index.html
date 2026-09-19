@@ -135,7 +135,7 @@
       </div>
     </section>
 
-      <!-- CURSOS Y CERTIFICACIONES -->
+    <!-- CURSOS Y CERTIFICACIONES -->
     <section id="cursos" class="cursos">
       <div class="cursos-header">
         <h3>Cursos y Certificaciones</h3>
@@ -154,18 +154,24 @@
             <span class="curso-badge">✓ Completado</span>
             <span class="curso-year">2026</span>
           </div>
+          <button class="btn-certificado" data-img="certificados/php.png">
+            📄 Ver certificado
+          </button>
         </div>
 
-        <div class="curso-card" data-cat="SMR">
+        <div class="curso-card" data-cat="otros">
           <div class="curso-glow"></div>
           <div class="curso-top">
-            <div class="curso-icon">💻</div>
+            <div class="curso-icon">🖥️</div>
           </div>
-          <h4>Grado medio en Sistemas Microinformáticos y Redes</h4>
+          <h4>Grado Medio en Sistemas Microinformáticos y Redes</h4>
           <div class="curso-footer">
             <span class="curso-badge">✓ Completado</span>
             <span class="curso-year">2025</span>
           </div>
+          <button class="btn-certificado" data-img="certificados/smr.png">
+            📄 Ver certificado
+          </button>
         </div>
 
         <div class="curso-card" data-cat="salud">
@@ -178,13 +184,10 @@
             <span class="curso-badge">✓ Completado</span>
             <span class="curso-year">2023</span>
           </div>
+          <button class="btn-certificado" data-img="certificados/primeros-auxilios.png">
+            📄 Ver certificado
+          </button>
         </div>
-          </div>
-
-        </div>
-
-        <!-- ➕ AÑADE MÁS CURSOS COPIANDO UN BLOQUE .curso-card -->
-        <!-- Categorías disponibles: programacion, salud, idiomas, diseno, otros -->
 
       </div>
     </section>
@@ -193,6 +196,7 @@
     <section id="idiomas" class="idiomas">
       <h3>Idiomas</h3>
       <div class="idiomas-grid">
+
         <div class="idioma-card">
           <div class="idioma-header">
             <span class="bandera">🇪🇸</span>
@@ -213,6 +217,9 @@
           <div class="barra">
             <div class="progreso" style="width: 60%"></div>
           </div>
+          <button class="btn-certificado" data-img="certificados/ingles-b1.png">
+            📄 Ver certificado
+          </button>
         </div>
 
         <div class="idioma-card">
@@ -224,7 +231,11 @@
           <div class="barra">
             <div class="progreso" style="width: 35%"></div>
           </div>
+          <button class="btn-certificado" data-img="certificados/italiano-a2.png">
+            📄 Ver certificado
+          </button>
         </div>
+
       </div>
     </section>
 
@@ -243,7 +254,16 @@
       <a href="mailto:ramoschamorroclara@gmail.com" class="btn">Enviar mensaje →</a>
     </section>
 
-    <p class="footer-final">Gracias por visitar mi portfolio· <span id="year"></span></p>
+    <p class="footer-final">Gracias por visitar mi portfolio  · <span id="year"></span></p>
+
+    <!-- ========== MODAL CERTIFICADO ========== -->
+    <div class="modal" id="modal-certificado">
+      <div class="modal-overlay" data-close></div>
+      <div class="modal-content">
+        <button class="modal-close" data-close aria-label="Cerrar">✕</button>
+        <img id="modal-img" src="" alt="Certificado">
+      </div>
+    </div>
 
   </main>
 

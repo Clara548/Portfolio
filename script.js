@@ -146,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.5 });
 
   barras.forEach(barra => {
-    // Guardar el ancho original ANTES de resetearlo
     barra.dataset.width = barra.style.width || '0%';
     barra.style.width = '0%';
     observerBarras.observe(barra);
@@ -181,7 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
     menuToggle.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
   });
 
-  // Cerrar menú al hacer click fuera en móvil
   document.addEventListener('click', (e) => {
     if (window.innerWidth <= 900 &&
         sidebar.classList.contains('open') &&
@@ -259,7 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initCanvas();
   animarParticulas();
 
-  // Debounce en el resize (evita recalcular 100 veces por segundo)
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
@@ -277,9 +274,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ============================================
-     10. LOG EN CONSOLA 🎉
+     10. MODAL DE CERTIFICADOS
+     ============================================ */
+  const modal = document.getElementById('modal-certificado');
+  const modalImg = document.getElementById('modal-img');
+  const botonesCert = document.querySelectorAll('.btn-certificado');
+
+  if (modal && modalImg) {
+    botonesCert.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const ruta = btn.dataset.img;
+        if (!ruta) return;
+
+        modalImg.src = ruta;
+        modalImg.alt = btn.closest('.curso-card, .idioma-card')
+          ?.querySelector('h4')?.textContent || 'Certificado';
+
+        modal.classList.add('open');
+        document.body.classList.add('modal-open');
+      });
+    });
+
+    modal.querySelectorAll('[data-close]').forEach(el => {
+      el.addEventListener('click', () => cerrarModal());
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) {
+        cerrarModal();
+      }
+    });
+
+    function cerrarModal() {
+      modal.classList.remove('open');
+      document.body.classList.remove('modal-open');
+      setTimeout(() => { modalImg.src = ''; }, 300);
+    }
+  }
+
+
+  /* ============================================
+     11. LOG EN CONSOLA 🎉
      ============================================ */
   console.log('%c¡Hola! 👋 Soy Clara Ramos', 'color: #a78bfa; font-size: 18px; font-weight: bold;');
-  console.log('%cGracias por inspeccionar mi portfolio', 'color: #8b5cf6; font-size: 14px;');
+  console.log('%cGracias por inspeccionar mi portfolio 💜', 'color: #8b5cf6; font-size: 14px;');
 
 });
