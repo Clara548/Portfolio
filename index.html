@@ -154,7 +154,7 @@
             <span class="curso-badge">✓ Completado</span>
             <span class="curso-year">2026</span>
           </div>
-          <button class="btn-certificado" data-img="/workspaces/Portfolio/Certificados/python.pdf">
+          <button class="btn-certificado" data-img="Certificados/python.pdf">
             📄 Ver certificado
           </button>
         </div>
@@ -254,14 +254,24 @@
       <a href="mailto:ramoschamorroclara@gmail.com" class="btn">Enviar mensaje →</a>
     </section>
 
-    <p class="footer-final">Gracias por visitar mi portfolio  · <span id="year"></span></p>
+    <p class="footer-final">Gracias por visitar mi portfolio · <span id="year"></span></p>
 
     <!-- ========== MODAL CERTIFICADO ========== -->
     <div class="modal" id="modal-certificado">
       <div class="modal-overlay" data-close></div>
       <div class="modal-content">
         <button class="modal-close" data-close aria-label="Cerrar">✕</button>
+
+        <!-- Visor para PDFs -->
+        <iframe id="modal-pdf" src="" title="Certificado PDF"></iframe>
+
+        <!-- Visor para imágenes (por si acaso) -->
         <img id="modal-img" src="" alt="Certificado">
+
+        <!-- Botón de descarga (opcional) -->
+        <a id="modal-download" class="modal-download" href="#" download>
+          ⬇️ Descargar
+        </a>
       </div>
     </div>
 

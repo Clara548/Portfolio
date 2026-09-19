@@ -274,28 +274,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ============================================
-     10. MODAL DE CERTIFICADOS
+     10. MODAL DE CERTIFICADOS (PDF + IMAGEN)
      ============================================ */
   const modal = document.getElementById('modal-certificado');
   const modalImg = document.getElementById('modal-img');
+  const modalPdf = document.getElementById('modal-pdf');
+  const modalDownload = document.getElementById('modal-download');
   const botonesCert = document.querySelectorAll('.btn-certificado');
 
-  if (modal && modalImg) {
+  if (modal && modalImg && modalPdf) {
     botonesCert.forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
+
         const ruta = btn.dataset.img;
         if (!ruta) return;
 
-        modalImg.style.opacity = '0';
-        modalImg.src = ruta;
-        modalImg.alt = btn.closest('.curso-card, .idioma-card')
-          ?.querySelector('h4')?.textContent || 'Certificado';
+        const esPDF = ruta.toLowerCase().endsWith('.pdf');
 
-        modalImg.onload = () => {
-          modalImg.style.transition = 'opacity 0.3s ease';
-          modalImg.style.opacity = '1';
-        };
+        if (esPDF) {
+          modal.classList.add('pdf-mode');
+          modal.classList.remove('img-mode');
+          modalPdf.src = ruta;
+          modalImg.src = '';
+        } else {
+          modal.classList.add('img-mode');
+          modal.classList.remove('pdf-mode');
+          modalPdf.src = '';
+          modalImg.style.opacity = '0';
+          modalImg.src = ruta;
+          modalImg.alt = btn.closest('.curso-card, .idioma-card')
+            ?.querySelector('h4')?.textContent || 'Certificado';
+
+          modalImg.onload = () => {
+            modalImg.style.transition = 'opacity 0.3s ease';
+            modalImg.style.opacity = '1';
+          };
+        }
+
+        // Configurar botón de descarga
+        if (modalDownload) {
+          modalDownload.href = ruta;
+          modalDownload.download = ruta.split('/').pop();
+        }
 
         modal.classList.add('open');
         document.body.classList.add('modal-open');
@@ -317,6 +338,8 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.remove('modal-open');
       setTimeout(() => {
         modalImg.src = '';
+        modalPdf.src = '';
+        modal.classList.remove('pdf-mode', 'img-mode');
         modalImg.style.opacity = '0';
       }, 300);
     }
