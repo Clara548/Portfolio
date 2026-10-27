@@ -1007,3 +1007,63 @@ body.light-mode #particles {
     font-size: 28px;
   }
 }
+/* ===== Cursos: mostrar más / mostrar menos ===== */
+.cursos-grid:not(.expandido) .curso-extra {
+  display: none;
+}
+
+.cursos-grid.expandido .curso-extra {
+  animation: cursoEntra 0.45s ease both;
+}
+
+@keyframes cursoEntra {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cursos-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.btn-mostrar-mas {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 26px;
+  background: rgba(139, 92, 246, 0.12);
+  color: var(--purple-light);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-mostrar-mas:hover {
+  border-color: var(--purple);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.btn-mostrar-mas:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 3px;
+}
+
+.mm-flecha {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.btn-mostrar-mas[aria-expanded="true"] .mm-flecha {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursos-grid.expandido .curso-extra { animation: none; }
+  .btn-mostrar-mas, .mm-flecha { transition: none; }
+}

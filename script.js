@@ -353,3 +353,43 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('%cGracias por inspeccionar mi portfolio 💜', 'color: #8b5cf6; font-size: 14px;');
 
 });
+// ===== Cursos y certificaciones: mostrar más / mostrar menos =====
+document.addEventListener('DOMContentLoaded', () => {
+  const grid = document.getElementById('cursos-grid');
+  const btn = document.getElementById('btn-mostrar-mas');
+  if (!grid || !btn) return;
+
+  const VISIBLES = 3; // tarjetas que se ven antes de pulsar "Mostrar más"
+  const extra = Array.from(grid.querySelectorAll('.curso-card')).slice(VISIBLES);
+
+  // Si hay pocas tarjetas, no hace falta el botón
+  if (extra.length === 0) {
+    btn.parentElement.hidden = true;
+    return;
+  }
+
+  extra.forEach(card => card.classList.add('curso-extra'));
+
+  const texto = btn.querySelector('.mm-texto');
+  let abierto = false;
+
+  function render() {
+    grid.classList.toggle('expandido', abierto);
+    btn.setAttribute('aria-expanded', String(abierto));
+    texto.textContent = abierto
+      ? 'Mostrar menos'
+      : `Mostrar más (${extra.length})`;
+  }
+
+  btn.addEventListener('click', () => {
+    abierto = !abierto;
+    render();
+    // Al cerrar, volver al inicio de la sección para no perder la posición
+    if (!abierto) {
+      document.getElementById('cursos')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+
+  render();
+});
