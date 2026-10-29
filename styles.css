@@ -1067,3 +1067,125 @@ body.light-mode #particles {
   .cursos-grid.expandido .curso-extra { animation: none; }
   .btn-mostrar-mas, .mm-flecha { transition: none; }
 }
+
+/* =========================================================
+   PROYECTOS
+   ========================================================= */
+.proyectos {
+  margin-bottom: 70px;
+}
+
+.proyectos-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.proyectos-todos {
+  font-size: 14px;
+  color: var(--purple-light);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.proyectos-todos:hover {
+  text-decoration: underline;
+}
+
+.proyectos-intro {
+  color: var(--text-muted);
+  max-width: 60ch;
+  margin: -10px 0 28px;
+}
+
+.proyectos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 22px;
+}
+
+.proyecto-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+.proyecto-card:hover,
+.proyecto-card:focus-visible {
+  transform: translateY(-6px);
+  border-color: var(--purple);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.proyecto-card:focus-visible {
+  outline: 3px solid var(--purple-light);
+  outline-offset: 3px;
+}
+
+.proyecto-thumb {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #fff;
+  border-bottom: 3px solid var(--accent, var(--purple));
+}
+
+.proyecto-thumb iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1280px;
+  height: 800px;
+  border: 0;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+
+.proyecto-body {
+  padding: 18px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.proyecto-body h4 {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.proyecto-body p {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.proyecto-tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.proyecto-tags li {
+  font-size: 12px;
+  color: var(--purple-light);
+  background: rgba(139, 92, 246, 0.12);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proyecto-card { transition: none; }
+  .proyecto-card:hover { transform: none; }
+}

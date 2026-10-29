@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clínica Dental Alameda · Demo</title>
+  <meta name="description" content="Web de demostración para una clínica dental ficticia.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal: #0F4C5C;
+      --teal-soft: #2E7180;
+      --aqua: #DCEFF1;
+      --aqua-deep: #B9DFE3;
+      --sun: #F2C14E;
+      --white: #FFFFFF;
+      --ink: #12303A;
+      --muted: #557079;
+      --radius-lg: 28px;
+      --radius-sm: 10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Manrope', system-ui, sans-serif; color: var(--ink); background: var(--white); line-height: 1.6; font-size: 17px; }
+    a { color: inherit; }
+    :focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; }
+    img, svg { display: block; max-width: 100%; }
+
+    .demo-bar { background: var(--ink); color: #cfe3e6; font-size: 13px; text-align: center; padding: 6px 16px; }
+    .demo-bar a { color: var(--sun); }
+
+    .wrap { width: min(1120px, 100% - 40px); margin-inline: auto; }
+
+    header { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.94); backdrop-filter: blur(6px); border-bottom: 1px solid var(--aqua); }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 20px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; text-decoration: none; color: var(--teal); }
+    .brand svg { width: 30px; height: 30px; }
+    .nav ul { display: flex; gap: 26px; list-style: none; font-weight: 600; font-size: 15px; }
+    .nav ul a { text-decoration: none; color: var(--muted); }
+    .nav ul a:hover { color: var(--teal); }
+    .phone { font-weight: 700; color: var(--teal); text-decoration: none; white-space: nowrap; }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; cursor: pointer; font: inherit; font-weight: 700; padding: 14px 24px; border-radius: 999px; text-decoration: none; transition: transform .15s ease, background .15s ease; }
+    .btn-sun { background: var(--sun); color: var(--ink); }
+    .btn-sun:hover { background: #f5cd6b; }
+    .btn-line { background: transparent; color: var(--teal); box-shadow: inset 0 0 0 2px var(--teal); }
+    .btn:active { transform: scale(.98); }
+
+    /* Hero with booking widget */
+    .hero { background: var(--aqua); padding: 64px 0 80px; }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; }
+    .hero h1 { font-size: clamp(38px, 5vw, 60px); line-height: 1.05; letter-spacing: -0.03em; font-weight: 800; color: var(--teal); max-width: 13ch; }
+    .hero p.lead { margin-top: 20px; font-size: 19px; color: var(--muted); max-width: 46ch; }
+    .hero .facts { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 10px 22px; font-weight: 600; font-size: 15px; color: var(--teal); }
+    .hero .facts span { display: inline-flex; align-items: center; gap: 8px; }
+    .hero .facts span::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--sun); }
+
+    .booking { background: var(--white); border-radius: var(--radius-lg); padding: 28px; box-shadow: 0 30px 60px -30px rgba(15,76,92,.45); }
+    .booking h2 { font-size: 21px; color: var(--teal); }
+    .booking .sub { font-size: 14px; color: var(--muted); margin-top: 2px; }
+    .booking fieldset { border: 0; margin-top: 20px; }
+    .booking legend { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { position: relative; }
+    .chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+    .chip label { display: block; padding: 9px 14px; border-radius: var(--radius-sm); background: var(--aqua); font-weight: 600; font-size: 14px; cursor: pointer; text-align: center; transition: background .15s ease, color .15s ease; }
+    .chip label small { display: block; font-weight: 500; font-size: 12px; color: var(--muted); }
+    .chip input:checked + label { background: var(--teal); color: var(--white); }
+    .chip input:checked + label small { color: #bfe0e5; }
+    .chip input:focus-visible + label { outline: 3px solid var(--sun); outline-offset: 2px; }
+    .chip input:disabled + label { opacity: .4; text-decoration: line-through; cursor: not-allowed; }
+    .booking select { width: 100%; font: inherit; font-size: 15px; padding: 11px 12px; border-radius: var(--radius-sm); border: 2px solid var(--aqua-deep); background: var(--white); color: var(--ink); }
+    .summary { margin-top: 22px; padding: 14px 16px; border-radius: var(--radius-sm); background: #FFF6DE; font-size: 15px; min-height: 52px; }
+    .booking .btn { width: 100%; margin-top: 14px; }
+    .booking .btn[disabled] { opacity: .5; cursor: not-allowed; }
+
+    /* Sections */
+    section.block { padding: 96px 0; }
+    .section-head { max-width: 640px; margin-bottom: 44px; }
+    .section-head h2 { font-size: clamp(30px, 3.6vw, 42px); line-height: 1.12; letter-spacing: -0.02em; color: var(--teal); }
+    .section-head p { margin-top: 12px; color: var(--muted); font-size: 18px; }
+
+    .treatments { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 2px solid var(--teal); }
+    .treatment { padding: 28px 28px 32px 0; border-bottom: 1px solid var(--aqua-deep); }
+    .treatment:not(:nth-child(3n+1)) { padding-left: 28px; border-left: 1px solid var(--aqua-deep); }
+    .treatment h3 { font-size: 20px; color: var(--teal); }
+    .treatment p { color: var(--muted); font-size: 15.5px; margin-top: 6px; }
+    .treatment .price { margin-top: 14px; font-weight: 700; font-size: 15px; }
+
+    .team { background: var(--teal); color: var(--white); }
+    .team .section-head h2 { color: var(--white); }
+    .team .section-head p { color: #b6d6db; }
+    .people { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .person .avatar { aspect-ratio: 1; border-radius: var(--radius-lg); background: var(--teal-soft); display: grid; place-items: end center; overflow: hidden; }
+    .person .avatar svg { width: 78%; }
+    .person h3 { margin-top: 16px; font-size: 19px; }
+    .person p { color: #b6d6db; font-size: 15px; }
+
+    .quotes { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: start; }
+    .quote-big { font-size: clamp(24px, 2.8vw, 32px); line-height: 1.3; font-weight: 600; color: var(--teal); letter-spacing: -0.01em; }
+    .quote-big footer, .quote-small footer { margin-top: 14px; font-size: 15px; font-weight: 600; color: var(--muted); }
+    .quote-small { padding: 22px 0; border-top: 1px solid var(--aqua-deep); }
+    .quote-small p { font-size: 16px; }
+    .stars { color: #E0A92B; letter-spacing: 2px; font-size: 15px; }
+
+    .faq { background: var(--aqua); }
+    .faq details { border-bottom: 1px solid var(--aqua-deep); max-width: 760px; }
+    .faq summary { cursor: pointer; padding: 20px 0; font-weight: 700; font-size: 18px; color: var(--teal); list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; font-size: 24px; line-height: 1; transition: transform .2s ease; }
+    .faq details[open] summary::after { transform: rotate(45deg); }
+    .faq details p { padding-bottom: 20px; color: var(--muted); max-width: 64ch; }
+
+    .visit { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+    .visit dl { display: grid; grid-template-columns: auto 1fr; gap: 10px 24px; font-size: 16px; }
+    .visit dt { font-weight: 700; color: var(--teal); }
+    .map { border-radius: var(--radius-lg); background: var(--aqua); min-height: 300px; position: relative; overflow: hidden; }
+    .map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    footer.site { background: var(--ink); color: #9fbcc2; padding: 40px 0; font-size: 14px; }
+    footer.site .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+    footer.site a { color: #cfe3e6; }
+
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 140%); background: var(--teal); color: var(--white); padding: 14px 22px; border-radius: 14px; font-weight: 600; box-shadow: 0 20px 40px -20px rgba(0,0,0,.5); transition: transform .3s ease, visibility .3s; z-index: 50; max-width: calc(100% - 32px); visibility: hidden; }
+    .toast.show { transform: translate(-50%, 0); visibility: visible; }
+
+    @media (max-width: 900px) {
+      .nav ul { display: none; }
+      .hero-grid, .quotes, .visit { grid-template-columns: 1fr; }
+      .treatments { grid-template-columns: 1fr; }
+      .treatment, .treatment:not(:nth-child(3n+1)) { padding: 24px 0; border-left: 0; }
+      .people { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 520px) {
+      .people { grid-template-columns: 1fr; }
+      .phone { display: none; }
+      section.block { padding: 64px 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-bar">Web de demostración · negocio ficticio · <a href="../">Ver más demos</a></div>
+
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#0F4C5C" d="M9 4c3 0 4.5 1.4 7 1.4S20 4 23 4c4 0 6 3 6 7 0 5-2 7-3 12-.6 3-1.5 5-3.2 5-2.4 0-2.3-7-6.8-7s-4.4 7-6.8 7C7.5 28 6.6 26 6 23 5 18 3 16 3 11c0-4 2-7 6-7z"/><circle cx="23" cy="10" r="2.4" fill="#F2C14E"/></svg>
+        Clínica Alameda
+      </a>
+      <ul>
+        <li><a href="#tratamientos">Tratamientos</a></li>
+        <li><a href="#equipo">Equipo</a></li>
+        <li><a href="#preguntas">Preguntas</a></li>
+        <li><a href="#visita">Cómo llegar</a></li>
+      </ul>
+      <a class="phone" href="tel:+34955000000">955 00 00 00</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <h1>Tu próxima revisión, sin esperas</h1>
+          <p class="lead">Odontología general, ortodoncia invisible e implantes en una clínica pequeña donde te atiende siempre la misma doctora.</p>
+          <div class="facts">
+            <span>Primera visita gratuita</span>
+            <span>Financiación sin intereses</span>
+            <span>Abierto hasta las 21:00</span>
+          </div>
+        </div>
+
+        <form class="booking" id="booking" novalidate>
+          <h2>Pide tu cita</h2>
+          <p class="sub">Elige día y hora. Te confirmamos por teléfono.</p>
+
+          <fieldset>
+            <legend>Motivo de la visita</legend>
+            <select id="reason" aria-label="Motivo de la visita">
+              <option>Revisión y limpieza</option>
+              <option>Dolor o urgencia</option>
+              <option>Ortodoncia</option>
+              <option>Implantes</option>
+              <option>Estética dental</option>
+            </select>
+          </fieldset>
+
+          <fieldset>
+            <legend>Día</legend>
+            <div class="chips" id="days"></div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Hora</legend>
+            <div class="chips" id="hours"></div>
+          </fieldset>
+
+          <div class="summary" id="summary" aria-live="polite">Selecciona un día y una hora.</div>
+          <button class="btn btn-sun" id="confirm" type="submit" disabled>Reservar cita</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="block" id="tratamientos">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Tratamientos</h2>
+          <p>Antes de empezar, te explicamos el plan y el precio cerrado por escrito.</p>
+        </div>
+        <div class="treatments">
+          <article class="treatment"><h3>Limpieza dental</h3><p>Eliminación de sarro y manchas, con revisión completa.</p><p class="price">Desde 45 €</p></article>
+          <article class="treatment"><h3>Ortodoncia invisible</h3><p>Alineadores transparentes con seguimiento mensual.</p><p class="price">Desde 2.400 €</p></article>
+          <article class="treatment"><h3>Implantes</h3><p>Planificación digital y prótesis fija en el día en casos indicados.</p><p class="price">Desde 890 €</p></article>
+          <article class="treatment"><h3>Blanqueamiento</h3><p>En clínica o con férulas para casa, sin sensibilidad.</p><p class="price">Desde 180 €</p></article>
+          <article class="treatment"><h3>Empastes</h3><p>Composite del color de tu diente, en una sola sesión.</p><p class="price">Desde 50 €</p></article>
+          <article class="treatment"><h3>Odontopediatría</h3><p>Primeras visitas tranquilas para niños a partir de 3 años.</p><p class="price">Revisión gratuita</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="block team" id="equipo">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Quién te va a atender</h2>
+          <p>Tres profesionales, sin rotaciones. Conocemos tu historial.</p>
+        </div>
+        <div class="people">
+          <article class="person">
+            <div class="avatar"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="44" r="24" fill="#DCEFF1"/><path d="M14 120c4-30 22-44 46-44s42 14 46 44z" fill="#F2C14E"/></svg></div>
+            <h3>Dra. Lucía Herrera</h3><p>Odontología general e implantes</p>
+          </article>
+          <article class="person">
+            <div class="avatar"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="44" r="24" fill="#DCEFF1"/><path d="M14 120c4-30 22-44 46-44s42 14 46 44z" fill="#B9DFE3"/></svg></div>
+            <h3>Dr. Pablo Medina</h3><p>Ortodoncia</p>
+          </article>
+          <article class="person">
+            <div class="avatar"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="44" r="24" fill="#DCEFF1"/><path d="M14 120c4-30 22-44 46-44s42 14 46 44z" fill="#FFFFFF"/></svg></div>
+            <h3>Marta Ruiz</h3><p>Higienista dental</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="wrap quotes">
+        <blockquote class="quote-big">
+          <p class="stars" aria-label="5 de 5 estrellas">★★★★★</p>
+          <p>“Tenía pánico al dentista. Me explicaron todo con calma y no sentí nada. Ahora vengo a las revisiones sin pensarlo.”</p>
+          <footer>Rocío, paciente desde 2023</footer>
+        </blockquote>
+        <div>
+          <blockquote class="quote-small"><p>“Me dieron cita para el mismo día por una urgencia.”</p><footer>Antonio M.</footer></blockquote>
+          <blockquote class="quote-small"><p>“El presupuesto fue exactamente el que me dijeron.”</p><footer>Elena G.</footer></blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="block faq" id="preguntas">
+      <div class="wrap">
+        <div class="section-head"><h2>Preguntas frecuentes</h2></div>
+        <details><summary>¿La primera visita es gratis de verdad?</summary><p>Sí. Incluye revisión, fotografías intraorales y un plan de tratamiento con precio por escrito. No tienes compromiso de empezar.</p></details>
+        <details><summary>¿Puedo pagar a plazos?</summary><p>Puedes financiar tratamientos de más de 300 € hasta en 12 meses sin intereses.</p></details>
+        <details><summary>¿Atendéis urgencias?</summary><p>Reservamos huecos cada día para urgencias. Llama por la mañana y te damos cita ese mismo día.</p></details>
+        <details><summary>¿Trabajáis con seguros?</summary><p>Trabajamos con las principales aseguradoras. Pregúntanos por la tuya al pedir cita.</p></details>
+      </div>
+    </section>
+
+    <section class="block" id="visita">
+      <div class="wrap visit">
+        <div>
+          <div class="section-head"><h2>Cómo llegar</h2></div>
+          <dl>
+            <dt>Dirección</dt><dd>Calle Alameda, 12 (dirección ficticia)</dd>
+            <dt>Horario</dt><dd>Lunes a viernes, 9:00–14:00 y 16:00–21:00</dd>
+            <dt>Teléfono</dt><dd><a href="tel:+34955000000">955 00 00 00</a></dd>
+            <dt>Aparcamiento</dt><dd>Zona azul gratuita a partir de las 20:00</dd>
+          </dl>
+        </div>
+        <div class="map" role="img" aria-label="Mapa ilustrativo de la ubicación">
+          <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <rect width="400" height="300" fill="#DCEFF1"/>
+            <path d="M-10 190 L410 120" stroke="#fff" stroke-width="22"/>
+            <path d="M150 -10 L210 310" stroke="#fff" stroke-width="16"/>
+            <path d="M-10 60 L410 80" stroke="#fff" stroke-width="10"/>
+            <rect x="250" y="170" width="90" height="70" rx="8" fill="#B9DFE3"/>
+            <rect x="40" y="200" width="80" height="60" rx="8" fill="#B9DFE3"/>
+            <circle cx="196" cy="157" r="16" fill="#0F4C5C"/>
+            <circle cx="196" cy="157" r="6" fill="#F2C14E"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <span>© 2026 Clínica Dental Alameda · Negocio ficticio</span>
+      <span><a href="#">Aviso legal</a> · <a href="#">Privacidad</a> · <a href="#">Cookies</a></span>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const summary = document.getElementById('summary');
+    const confirmBtn = document.getElementById('confirm');
+    const reason = document.getElementById('reason');
+    const fmtDay = new Intl.DateTimeFormat('es-ES', { weekday: 'short' });
+    const fmtLong = new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+    const slots = ['09:30', '10:30', '12:00', '16:30', '18:00', '19:30'];
+
+    // Next 5 working days
+    const days = [];
+    const d = new Date();
+    while (days.length < 5) {
+      d.setDate(d.getDate() + 1);
+      if (d.getDay() !== 0 && d.getDay() !== 6) days.push(new Date(d));
+    }
+
+    days.forEach((day, i) => {
+      const id = 'day' + i;
+      daysEl.insertAdjacentHTML('beforeend',
+        `<div class="chip"><input type="radio" name="day" id="${id}" value="${i}"><label for="${id}">${fmtDay.format(day).replace('.', '')}<small>${day.getDate()}</small></label></div>`);
+    });
+
+    function renderHours(dayIndex) {
+      hoursEl.innerHTML = '';
+      slots.forEach((h, i) => {
+        // Pseudo-random "taken" slots so the demo feels real
+        const taken = (dayIndex * 7 + i * 3) % 5 === 0;
+        const id = 'h' + i;
+        hoursEl.insertAdjacentHTML('beforeend',
+          `<div class="chip"><input type="radio" name="hour" id="${id}" value="${h}" ${taken ? 'disabled' : ''}><label for="${id}">${h}</label></div>`);
+      });
+      update();
+    }
+    renderHours(0);
+
+    function update() {
+      const day = document.querySelector('input[name="day"]:checked');
+      const hour = document.querySelector('input[name="hour"]:checked');
+      if (day && hour) {
+        summary.innerHTML = `<strong>${reason.value}</strong><br>${fmtLong.format(days[day.value])}, a las ${hour.value}`;
+        confirmBtn.disabled = false;
+      } else {
+        summary.textContent = day ? 'Ahora elige una hora.' : 'Selecciona un día y una hora.';
+        confirmBtn.disabled = true;
+      }
+    }
+
+    daysEl.addEventListener('change', e => renderHours(Number(e.target.value)));
+    hoursEl.addEventListener('change', update);
+    reason.addEventListener('change', update);
+
+    document.getElementById('booking').addEventListener('submit', e => {
+      e.preventDefault();
+      if (confirmBtn.disabled) return;
+      showToast('Cita reservada. En la web real, aquí se enviaría la solicitud a la clínica.');
+      e.target.reset();
+      renderHours(0);
+    });
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3800);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casa Tomillo · Taberna · Demo</title>
+  <meta name="description" content="Web de demostración para una taberna ficticia.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --lime: #FAFAF6;       /* whitewash */
+      --olive: #2F3A1F;
+      --olive-2: #46552F;
+      --ochre: #C8902E;
+      --azul: #1F4E8C;
+      --azul-soft: #DCE6F3;
+      --ink: #1E2416;
+      --muted: #5F6851;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Karla', system-ui, sans-serif; background: var(--lime); color: var(--ink); font-size: 17px; line-height: 1.6; }
+    :focus-visible { outline: 3px solid var(--ochre); outline-offset: 3px; }
+    a { color: inherit; }
+    .wrap { width: min(1100px, 100% - 40px); margin-inline: auto; }
+
+    .demo-bar { background: var(--olive); color: #d9dec9; font-size: 13px; text-align: center; padding: 6px 16px; }
+    .demo-bar a { color: #f0c46a; }
+
+    /* Azulejo pattern: drawn with SVG, repeated as background */
+    .tiles {
+      background-color: var(--azul-soft);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Crect width='56' height='56' fill='%23F4F7FB'/%3E%3Cpath d='M28 4 L36 20 L52 28 L36 36 L28 52 L20 36 L4 28 L20 20Z' fill='%231F4E8C'/%3E%3Ccircle cx='28' cy='28' r='5' fill='%23F4F7FB'/%3E%3Cpath d='M0 0h10L0 10zM56 0v10L46 0zM0 56v-10L10 56zM56 56H46l10-10z' fill='%23C8902E'/%3E%3Crect x='.5' y='.5' width='55' height='55' fill='none' stroke='%23C9D6E8'/%3E%3C/svg%3E");
+      background-size: 56px 56px;
+    }
+
+    header { padding: 22px 0; }
+    .nav { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    .logo { font-family: 'Fraunces', serif; font-weight: 800; font-size: 24px; text-decoration: none; color: var(--olive); }
+    .nav ul { display: flex; gap: 28px; list-style: none; font-weight: 500; }
+    .nav ul a { text-decoration: none; }
+    .nav ul a:hover { color: var(--azul); }
+    .btn { display: inline-block; font: inherit; font-weight: 700; border: 0; cursor: pointer; text-decoration: none; padding: 13px 24px; border-radius: 4px; }
+    .btn-olive { background: var(--olive); color: var(--lime); }
+    .btn-olive:hover { background: var(--olive-2); }
+
+    /* Hero: name framed by a tile border, like a tavern sign */
+    .hero { padding: 40px 0 90px; }
+    .sign { padding: 32px; background-size: 32px 32px; }
+    .sign-inner { background: var(--lime); padding: clamp(36px, 7vw, 88px) clamp(24px, 6vw, 80px); display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: end; }
+    .sign h1 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(56px, 10vw, 128px); line-height: .9; letter-spacing: -0.03em; color: var(--olive); font-variation-settings: "opsz" 144; }
+    .sign .since { font-family: 'Fraunces', serif; font-style: italic; font-size: 20px; color: var(--ochre); margin-bottom: 14px; }
+    .sign p.lead { font-size: 19px; color: var(--muted); max-width: 36ch; }
+    .sign .actions { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+    .sign .open { font-weight: 700; color: var(--olive); }
+    .sign .open::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #5DA03A; margin-right: 8px; vertical-align: 1px; }
+
+    /* Carta */
+    .menu { padding: 90px 0; background: var(--olive); color: var(--lime); }
+    .menu h2, .story h2, .book h2 { font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(34px, 4.4vw, 52px); line-height: 1.05; letter-spacing: -0.02em; }
+    .menu .intro { color: #c8cfb5; margin-top: 10px; max-width: 52ch; }
+    .tabs { margin-top: 36px; display: flex; gap: 6px; flex-wrap: wrap; border-bottom: 1px solid rgba(250,250,246,.2); }
+    .tabs button { font: inherit; font-weight: 700; color: #c8cfb5; background: none; border: 0; padding: 12px 18px; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -1px; }
+    .tabs button[aria-selected="true"] { color: var(--lime); border-color: var(--ochre); }
+    .panel { padding-top: 26px; columns: 2; column-gap: 56px; }
+    .panel[hidden] { display: none; }
+    .dish { break-inside: avoid; display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; padding: 16px 0; border-bottom: 1px dashed rgba(250,250,246,.22); }
+    .dish h3 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 20px; }
+    .dish .p { font-family: 'Fraunces', serif; font-size: 19px; color: #f0c46a; }
+    .dish p { grid-column: 1 / -1; color: #c8cfb5; font-size: 15px; }
+    .dish .tag { font-size: 12px; font-weight: 700; color: var(--olive); background: #f0c46a; border-radius: 3px; padding: 1px 6px; margin-left: 8px; vertical-align: 3px; }
+
+    /* Story */
+    .story { padding: 100px 0; }
+    .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .story p { margin-top: 18px; color: var(--muted); max-width: 54ch; font-size: 18px; }
+    .plate { aspect-ratio: 1; border-radius: 50%; position: relative; max-width: 380px; width: 100%; justify-self: center; }
+    .plate svg { width: 100%; height: 100%; }
+
+    /* Reservas */
+    .book { padding: 90px 0; }
+    .book-card { background: var(--lime); padding: clamp(28px, 5vw, 56px); display: grid; grid-template-columns: .9fr 1.1fr; gap: 48px; }
+    .book .note { color: var(--muted); margin-top: 12px; }
+    .book dl { margin-top: 26px; display: grid; grid-template-columns: auto 1fr; gap: 8px 20px; }
+    .book dt { font-weight: 700; color: var(--olive); }
+    form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    form label { display: block; font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+    form .field { margin-bottom: 16px; }
+    form input, form select, form textarea { width: 100%; font: inherit; font-size: 16px; padding: 12px 13px; border: 1.5px solid #C9CDBB; border-radius: 4px; background: #fff; color: var(--ink); }
+    form input:focus, form select:focus, form textarea:focus { border-color: var(--azul); outline: none; box-shadow: 0 0 0 3px var(--azul-soft); }
+    form .err { color: #A3341F; font-size: 14px; min-height: 20px; margin-top: 4px; }
+    form [aria-invalid="true"] { border-color: #A3341F; }
+    .ok { display: none; padding: 20px; background: var(--azul-soft); border-left: 4px solid var(--azul); }
+    .ok.show { display: block; }
+    .ok h3 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--azul); }
+
+    footer { background: var(--ink); color: #aab296; padding: 36px 0; font-size: 14px; }
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+
+    @media (max-width: 860px) {
+      .nav ul { display: none; }
+      .sign-inner, .story-grid, .book-card { grid-template-columns: 1fr; }
+      .panel { columns: 1; }
+      .plate { max-width: 360px; margin-inline: auto; }
+    }
+    @media (max-width: 480px) { form .row { grid-template-columns: 1fr; } .sign { padding: 24px; background-size: 24px 24px; } }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">Web de demostración · negocio ficticio · <a href="../">Ver más demos</a></div>
+
+  <header>
+    <div class="wrap nav">
+      <a class="logo" href="#">Casa Tomillo</a>
+      <ul>
+        <li><a href="#carta">Carta</a></li>
+        <li><a href="#casa">La casa</a></li>
+        <li><a href="#reservar">Reservar</a></li>
+      </ul>
+      <a class="btn btn-olive" href="#reservar">Reservar mesa</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="sign tiles">
+          <div class="sign-inner">
+            <div>
+              <p class="since">Taberna desde 1987</p>
+              <h1>Casa Tomillo</h1>
+            </div>
+            <div>
+              <p class="lead">Guisos de la abuela, tapas de mercado y vino de la tierra en una casa encalada del centro.</p>
+              <div class="actions">
+                <a class="btn btn-olive" href="#carta">Ver la carta</a>
+                <span class="open" id="open-status">Abierto hoy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="menu" id="carta">
+      <div class="wrap">
+        <h2>La carta</h2>
+        <p class="intro">Cambiamos los guisos según el mercado. Pregunta por el plato del día.</p>
+
+        <div class="tabs" role="tablist" aria-label="Secciones de la carta">
+          <button role="tab" id="t-tapas" aria-controls="p-tapas" aria-selected="true">Tapas</button>
+          <button role="tab" id="t-raciones" aria-controls="p-raciones" aria-selected="false" tabindex="-1">Raciones</button>
+          <button role="tab" id="t-postres" aria-controls="p-postres" aria-selected="false" tabindex="-1">Postres</button>
+          <button role="tab" id="t-vinos" aria-controls="p-vinos" aria-selected="false" tabindex="-1">Vinos</button>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-tapas" aria-labelledby="t-tapas">
+          <div class="dish"><h3>Salmorejo<span class="tag">Vegano</span></h3><span class="p">3,50 €</span><p>Con aceite de oliva virgen extra de la sierra.</p></div>
+          <div class="dish"><h3>Espinacas con garbanzos</h3><span class="p">3,80 €</span><p>Receta de la casa, con comino y pan frito.</p></div>
+          <div class="dish"><h3>Carrillada al vino</h3><span class="p">4,20 €</span><p>Guisada a fuego lento durante seis horas.</p></div>
+          <div class="dish"><h3>Croquetas de puchero</h3><span class="p">2,20 €/ud</span><p>Con la pringá del cocido del día anterior.</p></div>
+          <div class="dish"><h3>Tortilla de patatas</h3><span class="p">3,00 €</span><p>Jugosa, con cebolla pochada.</p></div>
+          <div class="dish"><h3>Queso de cabra a la plancha</h3><span class="p">3,90 €</span><p>Con mermelada de tomate casera.</p></div>
+        </div>
+        <div class="panel" role="tabpanel" id="p-raciones" aria-labelledby="t-raciones" hidden>
+          <div class="dish"><h3>Secreto ibérico</h3><span class="p">16,00 €</span><p>A la brasa, con patatas a lo pobre.</p></div>
+          <div class="dish"><h3>Bacalao con tomate</h3><span class="p">15,50 €</span><p>Lomo confitado sobre sofrito de tomate de la huerta.</p></div>
+          <div class="dish"><h3>Revuelto de setas</h3><span class="p">11,00 €</span><p>Setas de temporada, ajo y huevo de corral.</p></div>
+          <div class="dish"><h3>Ensalada de naranja<span class="tag">Vegano</span></h3><span class="p">9,00 €</span><p>Naranja, cebolleta, aceitunas y aceite.</p></div>
+        </div>
+        <div class="panel" role="tabpanel" id="p-postres" aria-labelledby="t-postres" hidden>
+          <div class="dish"><h3>Tocino de cielo</h3><span class="p">4,50 €</span><p>Receta del convento de al lado.</p></div>
+          <div class="dish"><h3>Torrijas</h3><span class="p">4,00 €</span><p>Con miel y canela, todo el año.</p></div>
+          <div class="dish"><h3>Arroz con leche</h3><span class="p">4,00 €</span><p>Cremoso, con limón y canela quemada.</p></div>
+        </div>
+        <div class="panel" role="tabpanel" id="p-vinos" aria-labelledby="t-vinos" hidden>
+          <div class="dish"><h3>Fino de la casa</h3><span class="p">2,20 € copa</span><p>Seco y fresco, ideal con las tapas.</p></div>
+          <div class="dish"><h3>Tinto joven</h3><span class="p">2,80 € copa</span><p>Bodega local, fácil de beber.</p></div>
+          <div class="dish"><h3>Blanco verdejo</h3><span class="p">16,00 € botella</span><p>Afrutado y ligero.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story" id="casa">
+      <div class="wrap story-grid">
+        <div class="plate" aria-hidden="true">
+          <svg viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="98" fill="#F4F7FB" stroke="#1F4E8C" stroke-width="2"/>
+            <circle cx="100" cy="100" r="86" fill="none" stroke="#1F4E8C" stroke-width="6" stroke-dasharray="4 8"/>
+            <circle cx="100" cy="100" r="70" fill="none" stroke="#C8902E" stroke-width="1.5"/>
+            <g fill="#1F4E8C">
+              <path d="M100 48 L110 90 L152 100 L110 110 L100 152 L90 110 L48 100 L90 90Z"/>
+            </g>
+            <circle cx="100" cy="100" r="12" fill="#C8902E"/>
+          </svg>
+        </div>
+        <div>
+          <h2>Una casa de vecinos convertida en taberna</h2>
+          <p>Abrimos en 1987 en el patio de la casa familiar. Seguimos cocinando con las recetas de entonces y comprando cada mañana en el mercado de abastos.</p>
+          <p>Hay sitio para 40 personas dentro y 20 en el patio, con naranjo incluido.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="book tiles" id="reservar">
+      <div class="wrap">
+        <div class="book-card">
+          <div>
+            <h2>Reserva tu mesa</h2>
+            <p class="note">Para grupos de más de 8 personas, llámanos.</p>
+            <dl>
+              <dt>Horario</dt><dd>Martes a domingo, 12:30–16:30 y 20:00–00:00</dd>
+              <dt>Cerrado</dt><dd>Lunes</dd>
+              <dt>Teléfono</dt><dd><a href="tel:+34955111111">955 11 11 11</a></dd>
+              <dt>Dirección</dt><dd>Plaza del Tomillo, 3 (ficticia)</dd>
+            </dl>
+          </div>
+
+          <div>
+            <form id="reserva" novalidate>
+              <div class="row">
+                <div class="field">
+                  <label for="fecha">Día</label>
+                  <input type="date" id="fecha" required>
+                  <p class="err" id="fecha-err"></p>
+                </div>
+                <div class="field">
+                  <label for="hora">Hora</label>
+                  <select id="hora" required>
+                    <option value="">Elige hora</option>
+                    <option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option>
+                    <option>20:30</option><option>21:00</option><option>21:30</option><option>22:00</option><option>22:30</option>
+                  </select>
+                  <p class="err" id="hora-err"></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="field">
+                  <label for="personas">Personas</label>
+                  <select id="personas">
+                    <option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="zona">Zona</label>
+                  <select id="zona"><option>Comedor</option><option>Patio</option></select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="nombre">Nombre</label>
+                <input id="nombre" autocomplete="name" required>
+                <p class="err" id="nombre-err"></p>
+              </div>
+              <div class="field">
+                <label for="tel">Teléfono</label>
+                <input id="tel" type="tel" autocomplete="tel" inputmode="tel" required>
+                <p class="err" id="tel-err"></p>
+              </div>
+              <button class="btn btn-olive" type="submit">Reservar mesa</button>
+            </form>
+            <div class="ok" id="ok" role="status" tabindex="-1">
+              <h3>Mesa reservada</h3>
+              <p id="ok-text"></p>
+              <p style="margin-top:8px;font-size:14px;color:var(--muted)">Demo: en la web real la reserva se enviaría al restaurante.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2026 Casa Tomillo · Negocio ficticio</span>
+      <span><a href="#">Aviso legal</a> · <a href="#">Privacidad</a> · <a href="#">Cookies</a></span>
+    </div>
+  </footer>
+
+  <script>
+    // Tabs with keyboard support
+    const tabs = [...document.querySelectorAll('[role="tab"]')];
+    function select(tab) {
+      tabs.forEach(t => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', on);
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+    }
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(t));
+      t.addEventListener('keydown', e => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+        select(next); next.focus();
+      });
+    });
+
+    // Open / closed status (Mon closed)
+    const now = new Date();
+    const status = document.getElementById('open-status');
+    const h = now.getHours() + now.getMinutes() / 60;
+    const openNow = now.getDay() !== 1 && ((h >= 12.5 && h < 16.5) || h >= 20);
+    status.textContent = now.getDay() === 1 ? 'Hoy cerramos, te esperamos mañana' : (openNow ? 'Abierto ahora' : 'Abrimos hoy');
+
+    // Reservation form
+    const fecha = document.getElementById('fecha');
+    const todayISO = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    fecha.min = todayISO;
+
+    function setErr(id, msg) {
+      document.getElementById(id + '-err').textContent = msg;
+      document.getElementById(id).setAttribute('aria-invalid', msg ? 'true' : 'false');
+      return !msg;
+    }
+
+    document.getElementById('reserva').addEventListener('submit', e => {
+      e.preventDefault();
+      let ok = true;
+      const day = fecha.value ? new Date(fecha.value + 'T12:00') : null;
+      ok &= setErr('fecha', !day ? 'Elige un día.' : (fecha.value < todayISO ? 'Elige hoy o un día futuro.' : (day.getDay() === 1 ? 'Los lunes cerramos. Elige otro día.' : '')));
+      ok &= setErr('hora', document.getElementById('hora').value ? '' : 'Elige una hora.');
+      ok &= setErr('nombre', document.getElementById('nombre').value.trim().length > 1 ? '' : 'Escribe tu nombre.');
+      ok &= setErr('tel', /^[+\d][\d\s]{8,}$/.test(document.getElementById('tel').value.trim()) ? '' : 'Escribe un teléfono válido, por ejemplo 600 123 456.');
+      if (!ok) { e.target.querySelector('[aria-invalid="true"]').focus(); return; }
+
+      const fmt = new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+      document.getElementById('ok-text').textContent =
+        `${document.getElementById('nombre').value.trim()}, te esperamos el ${fmt.format(day)} a las ${document.getElementById('hora').value}, ${document.getElementById('personas').value} personas en ${document.getElementById('zona').value.toLowerCase()}.`;
+      e.target.hidden = true;
+      const box = document.getElementById('ok');
+      box.classList.add('show');
+      box.focus();
+    });
+  </script>
+</body>
+</html>
