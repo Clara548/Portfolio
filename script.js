@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
      4. ANIMACIONES AL HACER SCROLL
      ============================================ */
   const elementosAnimar = document.querySelectorAll(
-    '.sobre-mi, .habilidades, .cursos, .idiomas, .contacto, .hero-text > *'
+    '.sobre-mi, .habilidades, .proyectos, .cursos, .idiomas, .contacto, .hero-text > *'
   );
   elementosAnimar.forEach(el => el.classList.add('reveal'));
 
@@ -393,3 +393,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   render();
 });
+
+
+/* ============================================
+   VISTAS PREVIAS DE PROYECTOS
+   Escala cada web de demo para que quepa en su tarjeta
+   ============================================ */
+(function () {
+  const thumbs = document.querySelectorAll('.proyecto-thumb');
+  if (!thumbs.length) return;
+  function ajustar() {
+    thumbs.forEach(t => {
+      const frame = t.querySelector('iframe');
+      if (frame) frame.style.transform = `scale(${t.clientWidth / 1280})`;
+    });
+  }
+  window.addEventListener('resize', ajustar);
+  window.addEventListener('load', ajustar);
+  ajustar();
+})();
