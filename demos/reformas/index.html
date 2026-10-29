@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ortega Reformas · Demo</title>
+  <meta name="description" content="Web de demostración para una empresa de reformas ficticia.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --concrete: #E4E4E0;
+      --paper: #F3F3F0;
+      --char: #23262B;
+      --char-2: #34383F;
+      --hivis: #FFD23F;
+      --blue: #2D5DA1;
+      --muted: #5E636B;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Archivo', system-ui, sans-serif; font-stretch: 100%; background: var(--paper); color: var(--char); font-size: 17px; line-height: 1.6; }
+    :focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+    a { color: inherit; }
+    .wrap { width: min(1160px, 100% - 40px); margin-inline: auto; }
+    .demo-bar { background: var(--char); color: #c9ccd1; font-size: 13px; text-align: center; padding: 6px 16px; }
+    .demo-bar a { color: var(--hivis); }
+
+    .cond { font-stretch: 68%; text-transform: none; }
+
+    header { background: var(--char); color: #fff; }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 70px; gap: 16px; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; font-stretch: 75%; font-size: 24px; }
+    .logo i { width: 22px; height: 22px; background: repeating-linear-gradient(-45deg, var(--hivis) 0 5px, var(--char) 5px 10px); border: 2px solid var(--hivis); }
+    .nav ul { display: flex; gap: 28px; list-style: none; font-weight: 600; font-size: 15px; }
+    .nav ul a { text-decoration: none; color: #c9ccd1; }
+    .nav ul a:hover { color: #fff; }
+    .btn { display: inline-block; font: inherit; font-weight: 800; border: 0; cursor: pointer; text-decoration: none; padding: 14px 22px; border-radius: 2px; }
+    .btn-hivis { background: var(--hivis); color: var(--char); }
+    .btn-hivis:hover { background: #ffdc66; }
+    .btn-dark { background: var(--char); color: #fff; }
+
+    /* Hero on blueprint grid */
+    .hero {
+      background-color: var(--blue);
+      background-image:
+        linear-gradient(rgba(255,255,255,.14) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.14) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+      color: #fff; padding: 80px 0 0; overflow: hidden;
+    }
+    .hero h1 { font-weight: 900; font-stretch: 62%; font-size: clamp(64px, 12vw, 168px); line-height: .86; letter-spacing: -0.01em; max-width: 9ch; }
+    .hero-row { display: flex; justify-content: space-between; align-items: end; gap: 40px; flex-wrap: wrap; }
+    .hero p.lead { max-width: 38ch; font-size: 19px; color: #dbe6f5; }
+    .hero .actions { margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero .btn-ghost { color: #fff; box-shadow: inset 0 0 0 2px rgba(255,255,255,.7); }
+    .dims { margin-top: 64px; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(255,255,255,.4); }
+    .dims div { padding: 20px 0 28px; }
+    .dims div + div { padding-left: 24px; border-left: 1px solid rgba(255,255,255,.4); }
+    .dims strong { display: block; font-stretch: 62%; font-weight: 800; font-size: 40px; line-height: 1; color: var(--hivis); }
+    .dims span { font-size: 15px; color: #dbe6f5; }
+
+    section.s { padding: 96px 0; }
+    .head { max-width: 640px; margin-bottom: 40px; }
+    .head h2 { font-weight: 800; font-stretch: 70%; font-size: clamp(38px, 5vw, 60px); line-height: .98; }
+    .head p { margin-top: 12px; color: var(--muted); font-size: 18px; }
+
+    /* Before / after */
+    .ba { position: relative; aspect-ratio: 16/9; overflow: hidden; background: var(--concrete); user-select: none; touch-action: pan-y; border: 2px solid var(--char); }
+    .ba svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .ba .after { clip-path: inset(0 0 0 var(--pos, 50%)); }
+    .ba .handle { position: absolute; top: 0; bottom: 0; left: var(--pos, 50%); width: 3px; background: var(--hivis); transform: translateX(-50%); pointer-events: none; }
+    .ba .handle::after { content: "◀ ▶"; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); background: var(--hivis); color: var(--char); font-size: 12px; font-weight: 800; padding: 10px 8px; white-space: nowrap; }
+    .ba input[type=range] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
+    .ba .lbl { position: absolute; top: 14px; font-weight: 800; font-size: 14px; padding: 4px 10px; background: var(--char); color: #fff; }
+    .ba .lbl.l { left: 14px; } .ba .lbl.r { right: 14px; background: var(--hivis); color: var(--char); }
+    .ba-caption { margin-top: 14px; color: var(--muted); font-size: 15px; }
+
+    /* Services list */
+    .services { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 3px solid var(--char); }
+    .svc { padding: 26px 0; border-bottom: 1px solid #c9c9c3; display: grid; grid-template-columns: 1fr auto; gap: 4px 24px; }
+    .services .svc:nth-child(odd) { padding-right: 32px; }
+    .services .svc:nth-child(even) { padding-left: 32px; border-left: 1px solid #c9c9c3; }
+    .svc h3 { font-size: 22px; font-weight: 800; font-stretch: 80%; }
+    .svc .from { font-weight: 700; color: var(--blue); white-space: nowrap; }
+    .svc p { grid-column: 1 / -1; color: var(--muted); font-size: 15.5px; }
+
+    /* Estimator */
+    .calc-wrap { background: var(--char); color: #fff; }
+    .calc-wrap .head p { color: #b6bac1; }
+    .calc { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: start; }
+    .calc fieldset { border: 0; margin-bottom: 26px; }
+    .calc legend { font-weight: 700; margin-bottom: 10px; }
+    .seg { display: flex; flex-wrap: wrap; gap: 8px; }
+    .seg label { position: relative; }
+    .seg input { position: absolute; opacity: 0; }
+    .seg span { display: block; padding: 10px 16px; border: 1.5px solid #5a5f67; cursor: pointer; font-weight: 600; font-size: 15px; }
+    .seg input:checked + span { background: var(--hivis); color: var(--char); border-color: var(--hivis); }
+    .seg input:focus-visible + span { outline: 3px solid #7fa6dc; outline-offset: 2px; }
+    .range-row { display: flex; align-items: center; gap: 16px; }
+    .range-row input { flex: 1; accent-color: var(--hivis); }
+    .range-row output { font-weight: 800; font-stretch: 70%; font-size: 26px; min-width: 80px; text-align: right; }
+    .result { background: var(--hivis); color: var(--char); padding: 32px; }
+    .result .label { font-weight: 700; font-size: 15px; }
+    .result .amount { font-weight: 900; font-stretch: 62%; font-size: clamp(52px, 7vw, 80px); line-height: 1; margin: 6px 0 10px; }
+    .result ul { list-style: none; font-size: 15px; border-top: 1px solid rgba(35,38,43,.25); padding-top: 12px; }
+    .result li { display: flex; justify-content: space-between; padding: 3px 0; }
+    .result small { display: block; margin-top: 14px; font-size: 13px; }
+    .result .btn { margin-top: 18px; width: 100%; text-align: center; }
+
+    /* Process: real sequence, numbered */
+    .steps { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; counter-reset: s; }
+    .steps li { counter-increment: s; border-top: 3px solid var(--char); padding-top: 16px; }
+    .steps li::before { content: counter(s); font-weight: 900; font-stretch: 62%; font-size: 56px; line-height: 1; color: var(--blue); display: block; margin-bottom: 8px; }
+    .steps h3 { font-size: 19px; font-weight: 800; }
+    .steps p { color: var(--muted); font-size: 15.5px; margin-top: 4px; }
+
+    /* Contact */
+    .contact { background: var(--concrete); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+    .contact form .f { margin-bottom: 14px; }
+    .contact label { display: block; font-weight: 700; font-size: 15px; margin-bottom: 5px; }
+    .contact input, .contact textarea, .contact select { width: 100%; font: inherit; padding: 12px; border: 2px solid var(--char); border-radius: 0; background: #fff; }
+    .contact textarea { min-height: 110px; resize: vertical; }
+    .contact .err { color: #A3341F; font-size: 14px; min-height: 18px; }
+    .contact .done { display: none; background: var(--char); color: #fff; padding: 22px; }
+    .contact .done.show { display: block; }
+    .contact .info p { margin-bottom: 10px; }
+    .contact .info strong { display: block; font-stretch: 80%; font-size: 20px; }
+
+    footer { background: var(--char); color: #9ca1a9; padding: 34px 0; font-size: 14px; }
+    footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+    @media (max-width: 900px) {
+      .nav ul { display: none; }
+      .calc, .contact-grid { grid-template-columns: 1fr; }
+      .services { grid-template-columns: 1fr; }
+      .services .svc:nth-child(n) { padding-left: 0; padding-right: 0; border-left: 0; }
+      .steps { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 520px) {
+      .dims { grid-template-columns: 1fr; }
+      .dims div + div { padding-left: 0; border-left: 0; border-top: 1px solid rgba(255,255,255,.4); }
+      .steps { grid-template-columns: 1fr; }
+      .nav .btn { padding: 10px 14px; font-size: 14px; white-space: nowrap; }
+      .logo { font-size: 20px; white-space: nowrap; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <div class="demo-bar">Web de demostración · negocio ficticio · <a href="../">Ver más demos</a></div>
+
+  <header>
+    <div class="wrap nav">
+      <a class="logo" href="#"><i aria-hidden="true"></i>Ortega Reformas</a>
+      <ul>
+        <li><a href="#trabajos">Trabajos</a></li>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#calculadora">Calcula tu reforma</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <a class="btn btn-hivis" href="#contacto">Pedir presupuesto</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-row">
+          <h1>Reformamos tu casa por dentro</h1>
+          <div>
+            <p class="lead">Cocinas, baños y reformas integrales con un solo responsable de obra, plazos por escrito y la casa limpia cada tarde.</p>
+            <div class="actions">
+              <a class="btn btn-hivis" href="#calculadora">Calcular precio orientativo</a>
+              <a class="btn btn-ghost" href="#trabajos">Ver trabajos</a>
+            </div>
+          </div>
+        </div>
+        <div class="dims">
+          <div><strong>420</strong><span>reformas terminadas desde 2009</span></div>
+          <div><strong>3 años</strong><span>de garantía en mano de obra</span></div>
+          <div><strong>48 h</strong><span>para visitarte y darte presupuesto</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="s" id="trabajos">
+      <div class="wrap">
+        <div class="head">
+          <h2>Antes y después</h2>
+          <p>Arrastra la barra para comparar. Cocina de 9 m², terminada en 3 semanas.</p>
+        </div>
+        <div class="ba" id="ba" style="--pos:50%">
+          <!-- Before: dated kitchen -->
+          <svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <rect width="800" height="450" fill="#D9CBA3"/>
+            <g fill="#E8DDBF" stroke="#BFAE84"><rect x="0" y="0" width="800" height="250"/>
+              <path d="M0 40h800M0 80h800M0 120h800M0 160h800M0 200h800M0 240h800" stroke-width="1"/>
+              <path d="M40 0v250M80 0v250M120 0v250M160 0v250M200 0v250M240 0v250M280 0v250M320 0v250M360 0v250M400 0v250M440 0v250M480 0v250M520 0v250M560 0v250M600 0v250M640 0v250M680 0v250M720 0v250M760 0v250" stroke-width="1"/></g>
+            <rect x="60" y="40" width="420" height="110" fill="#8A5A2B"/>
+            <path d="M200 40v110M340 40v110" stroke="#6E4520" stroke-width="3"/>
+            <rect x="0" y="250" width="800" height="200" fill="#9B6A37"/>
+            <rect x="0" y="240" width="800" height="16" fill="#B8A98A"/>
+            <path d="M200 256v194M400 256v194M600 256v194" stroke="#6E4520" stroke-width="3"/>
+            <rect x="540" y="60" width="160" height="120" fill="#BFD3E0" stroke="#fff" stroke-width="8"/>
+            <circle cx="300" cy="225" r="4" fill="#555"/>
+            <rect x="0" y="410" width="800" height="40" fill="#A4492F" opacity=".5"/>
+          </svg>
+          <!-- After: modern kitchen -->
+          <svg class="after" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <rect width="800" height="450" fill="#F3F3F0"/>
+            <rect x="0" y="0" width="800" height="250" fill="#FAFAF8"/>
+            <rect x="0" y="150" width="800" height="100" fill="#E7E5DF"/>
+            <rect x="60" y="30" width="420" height="100" fill="#3F4B44"/>
+            <path d="M200 30v100M340 30v100" stroke="#33403A" stroke-width="2"/>
+            <rect x="540" y="40" width="180" height="150" fill="#CFE2EC" stroke="#23262B" stroke-width="6"/>
+            <path d="M630 40v150" stroke="#23262B" stroke-width="4"/>
+            <rect x="0" y="236" width="800" height="14" fill="#DADAD6"/>
+            <rect x="0" y="250" width="800" height="160" fill="#3F4B44"/>
+            <path d="M200 250v160M400 250v160M600 250v160" stroke="#33403A" stroke-width="2"/>
+            <path d="M80 300h70M280 300h70M480 300h70M680 300h70" stroke="#C8B98F" stroke-width="5" stroke-linecap="round"/>
+            <rect x="0" y="410" width="800" height="40" fill="#C9B79A"/>
+            <g stroke="#FFD23F" stroke-width="3"><path d="M150 0v18M350 0v18M550 0v18"/></g>
+            <circle cx="150" cy="22" r="6" fill="#FFD23F"/><circle cx="350" cy="22" r="6" fill="#FFD23F"/><circle cx="550" cy="22" r="6" fill="#FFD23F"/>
+          </svg>
+          <span class="lbl l">Antes</span><span class="lbl r">Después</span>
+          <div class="handle" aria-hidden="true"></div>
+          <input type="range" min="0" max="100" value="50" id="ba-range" aria-label="Comparar antes y después">
+        </div>
+        <p class="ba-caption">Ilustración de ejemplo. En una web real aquí irían fotos de obras del cliente.</p>
+      </div>
+    </section>
+
+    <section class="s" id="servicios" style="padding-top:0">
+      <div class="wrap">
+        <div class="head"><h2>Lo que hacemos</h2></div>
+        <div class="services">
+          <article class="svc"><h3>Cocinas</h3><span class="from">desde 6.500 €</span><p>Muebles, encimera, alicatado, fontanería y electricidad.</p></article>
+          <article class="svc"><h3>Baños</h3><span class="from">desde 4.200 €</span><p>Cambio de bañera por plato de ducha en 5 días.</p></article>
+          <article class="svc"><h3>Reforma integral</h3><span class="from">desde 450 €/m²</span><p>Distribución nueva, instalaciones, suelos y pintura.</p></article>
+          <article class="svc"><h3>Suelos y pintura</h3><span class="from">desde 25 €/m²</span><p>Tarima, porcelánico, alisado de paredes.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="s calc-wrap" id="calculadora">
+      <div class="wrap">
+        <div class="head">
+          <h2>Calcula tu reforma</h2>
+          <p>Un precio orientativo en un minuto. Después vamos a verla y te damos el presupuesto exacto.</p>
+        </div>
+        <div class="calc">
+          <form id="calc">
+            <fieldset>
+              <legend>Qué quieres reformar</legend>
+              <div class="seg">
+                <label><input type="radio" name="tipo" value="cocina" checked><span>Cocina</span></label>
+                <label><input type="radio" name="tipo" value="bano"><span>Baño</span></label>
+                <label><input type="radio" name="tipo" value="integral"><span>Vivienda completa</span></label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Superficie</legend>
+              <div class="range-row">
+                <input type="range" id="m2" min="4" max="40" value="10" aria-label="Metros cuadrados">
+                <output id="m2-out" for="m2">10 m²</output>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Calidad de acabados</legend>
+              <div class="seg">
+                <label><input type="radio" name="calidad" value="0.85"><span>Básica</span></label>
+                <label><input type="radio" name="calidad" value="1" checked><span>Media</span></label>
+                <label><input type="radio" name="calidad" value="1.35"><span>Alta</span></label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>Extras</legend>
+              <div class="seg">
+                <label><input type="checkbox" name="extra" value="elec"><span>Instalación eléctrica nueva</span></label>
+                <label><input type="checkbox" name="extra" value="tabique"><span>Tirar tabiques</span></label>
+                <label><input type="checkbox" name="extra" value="ventana"><span>Cambiar ventanas</span></label>
+              </div>
+            </fieldset>
+          </form>
+
+          <div class="result" aria-live="polite">
+            <p class="label">Precio orientativo</p>
+            <p class="amount" id="total">–</p>
+            <ul id="breakdown"></ul>
+            <small>IVA no incluido. Cálculo de ejemplo con precios ficticios.</small>
+            <a class="btn btn-dark" href="#contacto" id="calc-cta">Pedir visita con este cálculo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="s">
+      <div class="wrap">
+        <div class="head"><h2>Cómo trabajamos</h2></div>
+        <ol class="steps">
+          <li><h3>Visita</h3><p>Medimos y vemos contigo qué quieres cambiar.</p></li>
+          <li><h3>Presupuesto cerrado</h3><p>Partida a partida, con plazo de obra por escrito.</p></li>
+          <li><h3>Obra</h3><p>Un jefe de obra te informa cada viernes por WhatsApp.</p></li>
+          <li><h3>Entrega</h3><p>Limpieza final, revisión contigo y garantía firmada.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="s contact" id="contacto">
+      <div class="wrap contact-grid">
+        <div class="info">
+          <div class="head"><h2>Pide tu presupuesto</h2><p>Te llamamos en menos de 24 horas laborables.</p></div>
+          <p><strong>955 22 22 22</strong>Lunes a viernes, 8:00–18:00</p>
+          <p><strong>Zona de trabajo</strong>Capital y pueblos a menos de 40 km</p>
+        </div>
+        <div>
+          <form id="contact" novalidate>
+            <div class="f"><label for="c-nombre">Nombre</label><input id="c-nombre" autocomplete="name"><p class="err" id="c-nombre-err"></p></div>
+            <div class="f"><label for="c-tel">Teléfono</label><input id="c-tel" type="tel" autocomplete="tel"><p class="err" id="c-tel-err"></p></div>
+            <div class="f"><label for="c-msg">Qué necesitas</label><textarea id="c-msg"></textarea></div>
+            <button class="btn btn-hivis" type="submit">Enviar solicitud</button>
+          </form>
+          <div class="done" id="done" role="status" tabindex="-1">
+            <strong>Solicitud enviada.</strong> Te llamaremos pronto. (Demo: en la web real se enviaría a la empresa.)
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2026 Ortega Reformas · Negocio ficticio</span>
+      <span><a href="#">Aviso legal</a> · <a href="#">Privacidad</a> · <a href="#">Cookies</a></span>
+    </div>
+  </footer>
+
+  <script>
+    // Before / after slider
+    const ba = document.getElementById('ba');
+    document.getElementById('ba-range').addEventListener('input', e => ba.style.setProperty('--pos', e.target.value + '%'));
+
+    // Estimator (fictional prices)
+    const base = { cocina: { fijo: 3500, m2: 420 }, bano: { fijo: 2600, m2: 480 }, integral: { fijo: 4000, m2: 430 } };
+    const extras = { elec: ['Electricidad nueva', 55], tabique: ['Tirar tabiques', 900], ventana: ['Ventanas', 650] };
+    const eur = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0, useGrouping: 'always' });
+    const form = document.getElementById('calc');
+    const m2 = document.getElementById('m2');
+
+    function calc() {
+      const tipo = form.tipo.value;
+      const q = Number(form.calidad.value);
+      if (tipo === 'integral') { m2.max = 150; if (Number(m2.value) < 40) m2.value = 70; } else { m2.max = 40; if (Number(m2.value) > 40) m2.value = 10; }
+      const area = Number(m2.value);
+      document.getElementById('m2-out').textContent = area + ' m²';
+      const lines = [];
+      const obra = (base[tipo].fijo + base[tipo].m2 * area) * q;
+      lines.push(['Obra y materiales', obra]);
+      [...form.querySelectorAll('[name=extra]:checked')].forEach(x => {
+        const [name, v] = extras[x.value];
+        lines.push([name, x.value === 'elec' ? v * area : v]);
+      });
+      const total = lines.reduce((s, l) => s + l[1], 0);
+      const low = Math.round(total * 0.9 / 100) * 100, high = Math.round(total * 1.1 / 100) * 100;
+      document.getElementById('total').textContent = `${eur.format(low)} – ${eur.format(high)}`;
+      document.getElementById('breakdown').innerHTML = lines.map(([n, v]) => `<li><span>${n}</span><span>${eur.format(Math.round(v))}</span></li>`).join('');
+      document.getElementById('c-msg').value = `Reforma de ${{cocina:'cocina',bano:'baño',integral:'vivienda completa'}[tipo]}, ${area} m². Cálculo orientativo: ${eur.format(low)} – ${eur.format(high)}.`;
+    }
+    form.addEventListener('input', calc);
+    calc();
+
+    // Contact form
+    document.getElementById('contact').addEventListener('submit', e => {
+      e.preventDefault();
+      const n = document.getElementById('c-nombre'), t = document.getElementById('c-tel');
+      const en = n.value.trim().length > 1 ? '' : 'Escribe tu nombre.';
+      const et = /^[+\d][\d\s]{8,}$/.test(t.value.trim()) ? '' : 'Escribe un teléfono válido, por ejemplo 600 123 456.';
+      document.getElementById('c-nombre-err').textContent = en;
+      document.getElementById('c-tel-err').textContent = et;
+      n.setAttribute('aria-invalid', !!en); t.setAttribute('aria-invalid', !!et);
+      if (en) return n.focus();
+      if (et) return t.focus();
+      e.target.hidden = true;
+      const d = document.getElementById('done'); d.classList.add('show'); d.focus();
+    });
+  </script>
+</body>
+</html>
